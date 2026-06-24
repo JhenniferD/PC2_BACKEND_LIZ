@@ -4,10 +4,30 @@ from typing import List
 from uuid import UUID
 from app.database import get_db
 from app.models.domain import Estibador, Usuario
+from app.models.enums import EstadoEstibador
+from pydantic import BaseModel
 from app.schemas.domain import EstibadorCreate, EstibadorResponse
 from app.core.security import get_current_active_user
 
 router = APIRouter(prefix="/estibadores", tags=["Estibadores"])
+
+class AsignacionRequest(BaseModel):
+    placa: str
+
+@router.post("/asignar-aleatorio", response_model=EstibadorResponse)
+def asignar_aleatorio(req: AsignacionRequest, db: Session = Depends(get_db), current_user: Usuario = Depends(get_current_active_user)):
+    estibador = db.query(Estibador).filter(
+        Estibador.estado == EstadoEstibador.DISPONIBLE,
+        Estibador.antecedentes_penales == False
+    ).first()
+
+    if not estibador:
+        raise HTTPException(status_code=400, detail="No hay estibadores disponibles en este momento")
+
+    estibador.estado = EstadoEstibador.OCUPADO
+    db.commit()
+    db.refresh(estibador)
+    return estibador
 
 @router.post("/", response_model=EstibadorResponse, status_code=status.HTTP_201_CREATED)
 def create_estibador(estibador: EstibadorCreate, db: Session = Depends(get_db), current_user: Usuario = Depends(get_current_active_user)):

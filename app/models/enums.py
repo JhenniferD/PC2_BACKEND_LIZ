@@ -2,8 +2,11 @@ import enum
 
 class RolUsuario(str, enum.Enum):
     ADMIN = "ADMIN"
+    Admin = "Admin"
     COMERCIANTE = "COMERCIANTE"
+    Comerciante = "Comerciante"
     ESTIBADOR = "ESTIBADOR"
+    Estibador = "Estibador"
 
 class EstadoLicencia(str, enum.Enum):
     ACTIVA = "ACTIVA"

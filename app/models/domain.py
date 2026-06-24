@@ -13,7 +13,7 @@ class Usuario(Base):
     nombre = Column(String, nullable=False)
     email = Column(String, unique=True, index=True, nullable=False)
     password_hash = Column(String, nullable=False)
-    rol = Column(SQLEnum(RolUsuario), nullable=False)
+    rol = Column(SQLEnum(RolUsuario, values_callable=lambda obj: [e.value for e in obj]), nullable=False)
     activo = Column(Boolean, default=True)
     fecha_creacion = Column(DateTime(timezone=True), server_default=func.now())
 
@@ -24,7 +24,7 @@ class Comerciante(Base):
     usuario_id = Column(UUID(as_uuid=True), ForeignKey("usuarios.id"), nullable=False)
     ruc = Column(String, unique=True, nullable=False)
     puesto = Column(String, nullable=False)
-    estado_licencia = Column(SQLEnum(EstadoLicencia), nullable=False)
+    estado_licencia = Column(SQLEnum(EstadoLicencia, values_callable=lambda obj: [e.value for e in obj]), nullable=False)
 
 class Estibador(Base):
     __tablename__ = "estibadores"
@@ -33,7 +33,7 @@ class Estibador(Base):
     usuario_id = Column(UUID(as_uuid=True), ForeignKey("usuarios.id"), nullable=False)
     dni = Column(String, unique=True, nullable=False)
     antecedentes_penales = Column(Boolean, default=False)
-    estado = Column(SQLEnum(EstadoEstibador), nullable=False)
+    estado = Column(SQLEnum(EstadoEstibador, values_callable=lambda obj: [e.value for e in obj]), nullable=False)
 
 class ViajeCamion(Base):
     __tablename__ = "viajes_camion"
@@ -41,9 +41,9 @@ class ViajeCamion(Base):
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     placa = Column(String, nullable=False)
     origen = Column(String, nullable=False)
-    tipo_carga = Column(SQLEnum(TipoCarga), nullable=False)
+    tipo_carga = Column(SQLEnum(TipoCarga, values_callable=lambda obj: [e.value for e in obj]), nullable=False)
     fecha_hora_reserva = Column(DateTime(timezone=True), nullable=False)
-    estado = Column(SQLEnum(EstadoViaje), nullable=False)
+    estado = Column(SQLEnum(EstadoViaje, values_callable=lambda obj: [e.value for e in obj]), nullable=False)
 
 class ServicioCarga(Base):
     __tablename__ = "servicios_carga"
@@ -53,7 +53,7 @@ class ServicioCarga(Base):
     comerciante_id = Column(UUID(as_uuid=True), ForeignKey("comerciantes.id"), nullable=False)
     estibador_id = Column(UUID(as_uuid=True), ForeignKey("estibadores.id"), nullable=True)
     tarifa = Column(Numeric(10, 2), nullable=False)
-    estado = Column(SQLEnum(EstadoServicio), nullable=False)
+    estado = Column(SQLEnum(EstadoServicio, values_callable=lambda obj: [e.value for e in obj]), nullable=False)
 
 class Pabellon(Base):
     __tablename__ = "pabellones"
@@ -61,7 +61,7 @@ class Pabellon(Base):
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     nombre = Column(String, nullable=False)
     categoria = Column(String, nullable=False)
-    estado_salubridad = Column(SQLEnum(EstadoSalubridadPabellon), nullable=False)
+    estado_salubridad = Column(SQLEnum(EstadoSalubridadPabellon, values_callable=lambda obj: [e.value for e in obj]), nullable=False)
     ultima_fumigacion = Column(DateTime(timezone=True), nullable=True)
 
 class ReporteSalubridad(Base):
@@ -71,6 +71,6 @@ class ReporteSalubridad(Base):
     pabellon_id = Column(UUID(as_uuid=True), ForeignKey("pabellones.id"), nullable=False)
     descripcion = Column(String, nullable=False)
     foto_url = Column(String, nullable=True)
-    estado = Column(SQLEnum(EstadoReporte), nullable=False)
+    estado = Column(SQLEnum(EstadoReporte, values_callable=lambda obj: [e.value for e in obj]), nullable=False)
     fecha_reporte = Column(DateTime(timezone=True), server_default=func.now())
     reportado_por = Column(UUID(as_uuid=True), ForeignKey("usuarios.id"), nullable=False)

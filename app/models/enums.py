@@ -18,8 +18,8 @@ class EstadoLicencia(str, enum.Enum):
     VENCIDA = "VENCIDA"
     Vencida = "Vencida"
     vencida = "vencida"
-    EnTramite = "EnTrámite"
-    AlDia = "AlDía"
+    EnTramite = "EnTr\u00e1mite"
+    AlDia = "AlD\u00eda"
 
 class EstadoEstibador(str, enum.Enum):
     DISPONIBLE = "DISPONIBLE"
@@ -97,8 +97,8 @@ class EstadoSalubridadPabellon(str, enum.Enum):
     Clausurado = "Clausurado"
     clausurado = "clausurado"
     Alerta = "Alerta"
-    OptimoAcento = "Óptimo"
-    Critico = "Crítico"
+    OptimoAcento = "\u00d3ptimo"
+    Critico = "Cr\u00edtico"
 
 class EstadoReporte(str, enum.Enum):
     PENDIENTE = "PENDIENTE"

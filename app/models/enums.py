@@ -44,6 +44,12 @@ class TipoCarga(str, enum.Enum):
     FRAGIL = "FRAGIL"
     Fragil = "Fragil"
     fragil = "fragil"
+    Abarrotes = "Abarrotes"
+    Carnes = "Carnes"
+    Tuberculos = "Tuberculos"
+    Frutas = "Frutas"
+    Verduras = "Verduras"
+    Pescados = "Pescados"
 
 class EstadoViaje(str, enum.Enum):
     PROGRAMADO = "PROGRAMADO"
@@ -77,6 +83,7 @@ class EstadoServicio(str, enum.Enum):
     CANCELADO = "CANCELADO"
     Cancelado = "Cancelado"
     cancelado = "cancelado"
+    Solicitado = "Solicitado"
 
 class EstadoSalubridadPabellon(str, enum.Enum):
     OPTIMO = "OPTIMO"

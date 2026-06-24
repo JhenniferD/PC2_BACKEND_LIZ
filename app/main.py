@@ -28,6 +28,14 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+from app.routers import auth, usuarios, comerciantes, estibadores, logistica, salubridad
+
+app.include_router(auth.router)
+app.include_router(usuarios.router)
+app.include_router(comerciantes.router)
+app.include_router(estibadores.router)
+app.include_router(logistica.router)
+app.include_router(salubridad.router)
 
 @app.get("/")
 def read_root():

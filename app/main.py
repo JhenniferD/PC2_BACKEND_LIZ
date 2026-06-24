@@ -1,4 +1,6 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
+from fastapi.responses import JSONResponse
+import traceback
 from fastapi.middleware.cors import CORSMiddleware
 from app.core.config import settings
 from app.database import engine, Base
@@ -29,6 +31,13 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+@app.exception_handler(Exception)
+async def global_exception_handler(request: Request, exc: Exception):
+    return JSONResponse(
+        status_code=400,
+        content={"detail": "Global Exception", "error": str(exc), "trace": traceback.format_exc()}
+    )
+
 from app.routers import auth, usuarios, comerciantes, estibadores, logistica, salubridad
 
 app.include_router(auth.router)

@@ -17,7 +17,7 @@ class AsignacionRequest(BaseModel):
 @router.post("/asignar-aleatorio", response_model=EstibadorResponse)
 def asignar_aleatorio(req: AsignacionRequest, db: Session = Depends(get_db), current_user: Usuario = Depends(get_current_active_user)):
     estibador = db.query(Estibador).filter(
-        Estibador.estado == EstadoEstibador.DISPONIBLE,
+        Estibador.estado.in_([EstadoEstibador.DISPONIBLE, EstadoEstibador.Disponible, EstadoEstibador.disponible]),
         Estibador.antecedentes_penales == False
     ).first()
 

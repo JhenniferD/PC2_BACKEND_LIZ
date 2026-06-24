@@ -4,7 +4,7 @@ from typing import List
 from uuid import UUID
 from app.database import get_db
 from app.models.domain import ViajeCamion, ServicioCarga, Usuario
-from app.schemas.domain import ViajeCamionCreate, ViajeCamionResponse, ServicioCargaCreate, ServicioCargaResponse
+from app.schemas.domain import ViajeCamionCreate, ViajeCamionResponse, ViajeCamionUpdate, ServicioCargaCreate, ServicioCargaResponse
 from app.core.security import get_current_active_user
 
 router = APIRouter(prefix="/logistica", tags=["Logística"])
@@ -28,6 +28,19 @@ def get_viaje(viaje_id: UUID, db: Session = Depends(get_db), current_user: Usuar
     viaje = db.query(ViajeCamion).filter(ViajeCamion.id == viaje_id).first()
     if viaje is None:
         raise HTTPException(status_code=404, detail="Viaje no encontrado")
+    return viaje
+
+@router.patch("/viajes/{viaje_id}", response_model=ViajeCamionResponse)
+def update_viaje(viaje_id: UUID, update_data: ViajeCamionUpdate, db: Session = Depends(get_db), current_user: Usuario = Depends(get_current_active_user)):
+    viaje = db.query(ViajeCamion).filter(ViajeCamion.id == viaje_id).first()
+    if viaje is None:
+        raise HTTPException(status_code=404, detail="Viaje no encontrado")
+    
+    if update_data.estado is not None:
+        viaje.estado = update_data.estado
+        
+    db.commit()
+    db.refresh(viaje)
     return viaje
 
 # --- Servicios Carga ---

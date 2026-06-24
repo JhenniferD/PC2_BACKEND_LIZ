@@ -65,6 +65,9 @@ class ViajeCamionBase(BaseModel):
 class ViajeCamionCreate(ViajeCamionBase):
     pass
 
+class ViajeCamionUpdate(BaseModel):
+    estado: Optional[EstadoViaje] = None
+
 class ViajeCamionResponse(ViajeCamionBase):
     id: UUID
     
